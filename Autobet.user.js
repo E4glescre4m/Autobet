@@ -8,8 +8,8 @@
 // @match           http://www.csgodouble.com/index.php
 // @match           http://csgodouble.com/
 // @match           http://csgodouble.com/index.php
-// @downloadURL     https://github.com/E4glescre4m/Autobet/blob/master/Autobet.user.js
-// @updateURL       https://github.com/E4glescre4m/Autobet/blob/master/Autobet.meta.js
+// @downloadURL     https://raw.githubusercontent.com/E4glescre4m/Autobet/master/Autobet.user.js
+// @updateURL       https://raw.githubusercontent.com/E4glescre4m/Autobet/master/Autobet.meta.js
 // @run-at          document-end
 // @grant           none
 // ==/UserScript==
