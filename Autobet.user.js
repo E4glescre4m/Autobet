@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name            [ClosedBETA] CSGODouble AUTOBET by Eagle
+// @name            [BETA] CSGODouble AUTOBET by Eagle
 // @description     An userscript for Csgodouble
 // @namespace       AUTOBET by Eagle
 // @version         1.5
