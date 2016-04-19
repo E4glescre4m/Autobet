@@ -2,7 +2,7 @@
 // @name            [BETA] CSGODouble AUTOBET by Eagle
 // @description     An userscript for Csgodouble
 // @namespace       AUTOBET by Eagle
-// @version         2.2
+// @version         2.3
 // @author          Eagle
 // @match           http://www.csgodouble.com/
 // @match           http://www.csgodouble.com/index.php
@@ -472,22 +472,23 @@ AutoBet.prototype.bet = function(amount, color) {
         if (Math.random() > 0.5) {
             color = 'black';
         }
-    } else if (color === 'etest') {
-        if (this.history[this.history.length -1 ] === this.history[this.history.length -2 ] === this.history[this.history.length -3 ] === this.history[this.history.length -4 ] === this.history[this.history.length -5 ]) {
-			color = this.history[this.history.length -5];
-		} else if (this.history[this.history.length -1 ] === this.history[this.history.length -2 ] === this.history[this.history.length -3 ] === this.history[this.history.length -4 ]){
-		color = this.history[this.history.length -4];
-		} else if (this.history[this.history.length -1 ] === this.history[this.history.length -2 ] === this.history[this.history.length -3 ]){
-		color = this.history[this.history.length - 3];
+	} else if (color === 'etest') {
+        if (this.history[this.history.length -1] === 'green'){
+		color = 'green';
 		} else if (this.history[this.history -1 ] === this.history[this.history -2 ]){
 			if (this.history[this.history.length -1] === 'red'){
 			color = 'black';
-			} else {
+			} else if (this.history[this.history.length -1]) {
 			color = 'red';}
-		} else if (this.history[this.history.length -1] === 'green'){
-		color = 'green';
+		} else if (this.history[this.history.length -1 ] === this.history[this.history.length -2 ] === this.history[this.history.length -3 ]){
+		color = this.history[this.history.length - 3];
+		} else if (this.history[this.history.length -1 ] === this.history[this.history.length -2 ] === this.history[this.history.length -3 ] === this.history[this.history.length -4 ]){
+		color = this.history[this.history.length -4];
+		} else if (this.history[this.history.length -1 ] === this.history[this.history.length -2 ] === this.history[this.history.length -3 ] === this.history[this.history.length -4 ] === this.history[this.history.length -5 ]) {
+			color = this.history[this.history.length -5];
 		}
-	} else if (color === 'last') {
+	}//END ETEST
+    else if (color === 'last') {
         color = this.history[this.history.length - 1];
     }
 
