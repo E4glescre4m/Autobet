@@ -2,7 +2,7 @@
 // @name            [BETA] CSGODouble AUTOBET by Eagle
 // @description     An userscript for Csgodouble
 // @namespace       AUTOBET by Eagle
-// @version         2.1
+// @version         2.2
 // @author          Eagle
 // @match           http://www.csgodouble.com/
 // @match           http://www.csgodouble.com/index.php
@@ -99,7 +99,6 @@ function AutoBet() {
         'wins': 0,
         'loses': 0,
         'balance': 0,
-		'green': 0
     };
 
     var menu = document.createElement('div');
@@ -138,7 +137,6 @@ function AutoBet() {
                 '<p><b>Wins:</b> <span id="AutoBet-stats-wins">' + this.stats.wins + '</span></p>' +
                 '<p><b>Loses:</b> <span id="AutoBet-stats-loses">' + this.stats.loses + '</span></p>' +
                 '<p><b>Balance:</b> <span id="AutoBet-stats-balance">' + this.stats.balance + '</span></p>' +
-				'<p><b>Green:</b> <span id="AutoBet-stats-green">' + this.stats.green + '</span></p>' +
             '</div>' +
         '</div>' +
         '<div class="form-group">' +
@@ -192,8 +190,7 @@ function AutoBet() {
             'wins': document.getElementById('AutoBet-stats-wins'),
             'loses': document.getElementById('AutoBet-stats-loses'),
             'balance': document.getElementById('AutoBet-stats-balance'),
-			'green': document.getElementById('AutoBet-stats-green')
-        },
+			      },
         'theme': document.getElementById('AutoBet-theme-switch'),
 		'safebetamount': document.getElementById('AutoBet-safe-bet-amount'),
 		'calculatesafebet': document.getElementById('AutoBet-calculate-safe-bet'),
@@ -279,7 +276,7 @@ function AutoBet() {
 		self.menu.safebetamount.disabled = !self.menu.calculatesafebet.checked;
 	};
 
-    // WTF is this shit below? >,.,<
+    // Menu Settings
 
     this.menu.black.onclick = function() {
         self.menu.rainbow.disabled = false;
@@ -453,7 +450,6 @@ AutoBet.prototype.updateStats = function() {
     this.menu.statistics.wins.innerHTML = this.stats.wins;
     this.menu.statistics.loses.innerHTML = this.stats.loses;
     this.menu.statistics.balance.innerHTML = this.stats.balance;
-	this.menu.statistics.green.innerHTML = this.stats.green;
     return true;
 };
 
@@ -476,21 +472,21 @@ AutoBet.prototype.bet = function(amount, color) {
         if (Math.random() > 0.5) {
             color = 'black';
         }
-	} else if (color === 'etest') {
+    } else if (color === 'etest') {
         if (this.history[this.history.length -1 ] === this.history[this.history.length -2 ] === this.history[this.history.length -3 ] === this.history[this.history.length -4 ] === this.history[this.history.length -5 ]) {
 			color = this.history[this.history.length -5];
 		} else if (this.history[this.history.length -1 ] === this.history[this.history.length -2 ] === this.history[this.history.length -3 ] === this.history[this.history.length -4 ]){
 		color = this.history[this.history.length -4];
 		} else if (this.history[this.history.length -1 ] === this.history[this.history.length -2 ] === this.history[this.history.length -3 ]){
 		color = this.history[this.history.length - 3];
+		} else if (this.history[this.history -1 ] === this.history[this.history -2 ]){
+			if (this.history[this.history.length -1] === 'red'){
+			color = 'black';
+			} else {
+			color = 'red';}
 		} else if (this.history[this.history.length -1] === 'green'){
 		color = 'green';
-		}else if (this.history[this.history -1 ] === this.history[this.history -2 ]){
-			if (this.last_color === 'red'){
-			color = 'black';
-			} else if (this.last_color === 'black'){
-			color = 'red';}
-		} 		
+		}
 	} else if (color === 'last') {
         color = this.history[this.history.length - 1];
     }
@@ -575,8 +571,6 @@ AutoBet.prototype.play = function() {
                 self.last_result = 'win';
                 self.log('Win!');
                 self.stats.wins += 1;
-				if (this.history[this.history.length -1] === 'green'){
-					self.stat.green += 1;}
                 self.old_base = self.base_bet;
                 self.old_method = self.method;
                 if (self.old_method === 'dalembert') {
@@ -592,9 +586,7 @@ AutoBet.prototype.play = function() {
                 self.last_result = 'lose';
                 self.log('Lose!');
                 self.stats.loses += 1;
-				if (this.history[this.history.length -1] === 'green'){
-					self.stat.green += 1;}
-                if (self.old_method === 'martingale') {
+				if (self.old_method === 'martingale') {
                     self.bet(self.last_bet * 2);
                 } else if (self.old_method === 'great martingale') {
                     self.bet(self.last_bet * 2 + self.old_base);
