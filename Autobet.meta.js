@@ -2,7 +2,7 @@
 // @name            [BETA]CSGODouble AUTOBET by Eagle
 // @description     An userscript that automates csgodouble.com betting using martingale system.
 // @namespace       AUTOBET by Eagle
-// @version         0.2
+// @version         1.2
 // @author          Eagle
 // @match           http://www.csgodouble.com/
 // @match           http://www.csgodouble.com/index.php
