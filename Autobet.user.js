@@ -488,7 +488,7 @@ AutoBet.prototype.bet = function(amount, color) {
 		}else if (this.history[this.history -1 ] === this.history[this.history -2 ]){
 			if (this.last_color === 'red'){
 			color = 'black';
-			} else {
+			} else if (this.last_color === 'black'){
 			color = 'red';}
 		} 		
 	} else if (color === 'last') {
