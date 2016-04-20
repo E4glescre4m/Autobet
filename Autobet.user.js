@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name            [BETA] CSGODouble AUTOBET by Eagle
+// @name            [BETA]CSGODouble AUTOBET by Eagle
 // @description     An userscript for Csgodouble
 // @namespace       AUTOBET by Eagle
-// @version         2.3
+// @version         2.5
 // @author          Eagle
 // @match           http://www.csgodouble.com/
 // @match           http://www.csgodouble.com/index.php
@@ -99,6 +99,7 @@ function AutoBet() {
         'wins': 0,
         'loses': 0,
         'balance': 0,
+		'zeros': 0
     };
 
     var menu = document.createElement('div');
@@ -137,6 +138,7 @@ function AutoBet() {
                 '<p><b>Wins:</b> <span id="AutoBet-stats-wins">' + this.stats.wins + '</span></p>' +
                 '<p><b>Loses:</b> <span id="AutoBet-stats-loses">' + this.stats.loses + '</span></p>' +
                 '<p><b>Balance:</b> <span id="AutoBet-stats-balance">' + this.stats.balance + '</span></p>' +
+				'<p><b>Green:</b> <span id="AutoBet-stats-zeros">' + this.stats.zeros + '</span></p>' +
             '</div>' +
         '</div>' +
         '<div class="form-group">' +
@@ -190,6 +192,7 @@ function AutoBet() {
             'wins': document.getElementById('AutoBet-stats-wins'),
             'loses': document.getElementById('AutoBet-stats-loses'),
             'balance': document.getElementById('AutoBet-stats-balance'),
+			'zeros': document.getElementById('AutoBet-stats-zeros'),
 			      },
         'theme': document.getElementById('AutoBet-theme-switch'),
 		'safebetamount': document.getElementById('AutoBet-safe-bet-amount'),
@@ -450,6 +453,7 @@ AutoBet.prototype.updateStats = function() {
     this.menu.statistics.wins.innerHTML = this.stats.wins;
     this.menu.statistics.loses.innerHTML = this.stats.loses;
     this.menu.statistics.balance.innerHTML = this.stats.balance;
+	this.menu.statistics.zeros.innerHTML = this.stats.zeros;
     return true;
 };
 
@@ -472,22 +476,30 @@ AutoBet.prototype.bet = function(amount, color) {
         if (Math.random() > 0.5) {
             color = 'black';
         }
-	} else if (color === 'etest') {
-        if (this.history[this.history.length -1] === 'green'){
+	} 
+	//Begin ETest
+	else if (color === 'etest') {
+         if (this.history[this.history.length -1] == 'green'){
 		color = 'green';
-		} else if (this.history[this.history -1 ] === this.history[this.history -2 ]){
-			if (this.history[this.history.length -1] === 'red'){
-			color = 'black';
-			} else if (this.history[this.history.length -1]) {
-			color = 'red';}
-		} else if (this.history[this.history.length -1 ] === this.history[this.history.length -2 ] === this.history[this.history.length -3 ]){
-		color = this.history[this.history.length - 3];
-		} else if (this.history[this.history.length -1 ] === this.history[this.history.length -2 ] === this.history[this.history.length -3 ] === this.history[this.history.length -4 ]){
-		color = this.history[this.history.length -4];
-		} else if (this.history[this.history.length -1 ] === this.history[this.history.length -2 ] === this.history[this.history.length -3 ] === this.history[this.history.length -4 ] === this.history[this.history.length -5 ]) {
-			color = this.history[this.history.length -5];
-		}
-	}//END ETEST
+             //4times the same
+		} else if (this.history[this.history.length -1 ] === this.history[this.history.length -2 ] && this.history[this.history.length -3 ] == this.history[this.history.length -2] && this.history[this.history.length -4] == this.history[this.history.length -2]){
+                  if (this.history[this.history.length -4] == 'red'){
+                      color = 'black';}
+                      else if (this.history[this.history.length -4] == 'black'){
+                      color = 'red';}
+            //3times the same
+        } else if (this.history[this.history.length -1 ] === this.history[this.history.length -2 ] && this.history[this.history.length -3 ] == this.history[this.history.length -2]){
+           color = this.history[this.history.length -3 ];
+            //2times the same
+        } else if (this.history[this.history.length -1 ] === this.history[this.history.length -2 ] ){
+                  if (this.history[this.history.length -2] == 'red'){
+                      color = 'black';}
+                      else if (this.history[this.history.length -2] == 'black'){
+                      color = 'red';}
+        } else if (this.history[this.history.length -1] != this.history[this.history.length -2]){
+                      color = this.history[this.history.length -2];}
+
+        	}//END ETEST
     else if (color === 'last') {
         color = this.history[this.history.length - 1];
     }
@@ -572,6 +584,9 @@ AutoBet.prototype.play = function() {
                 self.last_result = 'win';
                 self.log('Win!');
                 self.stats.wins += 1;
+				if (self.history[self.history.length -1] === 'green'){
+					self.stats.zeros += 1;
+				}
                 self.old_base = self.base_bet;
                 self.old_method = self.method;
                 if (self.old_method === 'dalembert') {
@@ -587,6 +602,9 @@ AutoBet.prototype.play = function() {
                 self.last_result = 'lose';
                 self.log('Lose!');
                 self.stats.loses += 1;
+				if (self.history[self.history.length -1] === 'green'){
+					self.stats.zeros += 1;
+				}
 				if (self.old_method === 'martingale') {
                     self.bet(self.last_bet * 2);
                 } else if (self.old_method === 'great martingale') {
