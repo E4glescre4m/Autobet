@@ -2,7 +2,7 @@
 // @name            [BETA]CSGODouble AUTOBET by Eagle
 // @description     An userscript for Csgodouble
 // @namespace       AUTOBET by Eagle
-// @version         2.5
+// @version         2.6
 // @author          Eagle
 // @match           http://www.csgodouble.com/
 // @match           http://www.csgodouble.com/index.php
@@ -477,29 +477,44 @@ AutoBet.prototype.bet = function(amount, color) {
             color = 'black';
         }
 	} 
-	//Begin ETest
+//Begin ETest
 	else if (color === 'etest') {
-         if (this.history[this.history.length -1] == 'green'){
-		color = 'green';
-             //4times the same
-		} else if (this.history[this.history.length -1 ] === this.history[this.history.length -2 ] && this.history[this.history.length -3 ] == this.history[this.history.length -2] && this.history[this.history.length -4] == this.history[this.history.length -2]){
-                  if (this.history[this.history.length -4] == 'red'){
-                      color = 'black';}
-                      else if (this.history[this.history.length -4] == 'black'){
-                      color = 'red';}
-            //3times the same
-        } else if (this.history[this.history.length -1 ] === this.history[this.history.length -2 ] && this.history[this.history.length -3 ] == this.history[this.history.length -2]){
-           color = this.history[this.history.length -3 ];
-            //2times the same
-        } else if (this.history[this.history.length -1 ] === this.history[this.history.length -2 ] ){
-                  if (this.history[this.history.length -2] == 'red'){
-                      color = 'black';}
-                      else if (this.history[this.history.length -2] == 'black'){
-                      color = 'red';}
-        } else if (this.history[this.history.length -1] != this.history[this.history.length -2]){
-                      color = this.history[this.history.length -2];}
-
-        	}//END ETEST
+		//2times the same
+         while (this.history[this.history.length -1 ] === this.history[this.history.length -2 ] ){
+			if (this.history[this.history.length -2 ]=== 'red'){
+			color = 'black';
+			}else if (this.history[this.history.length -2 ] === 'black'){
+				color = 'red';}
+			break ;
+         } while (this.history[this.history.length -1] != this.history[this.history.length -2]){
+			//if green
+             if (this.history[this.history.length -1] == 'green'){
+			    color = 'green';
+                break;}
+             if (this.history[this.history.length -1 ] === this.history[this.history.length -2 ] && this.history[this.history.length -3 ] == this.history[this.history.length -2]){
+                break;}
+             color = this.history[this.history.length -2];
+			break ;
+        //3times the same
+        } while (this.history[this.history.length -1 ] === this.history[this.history.length -2 ] && this.history[this.history.length -3 ] == this.history[this.history.length -2]){
+           if (this.history[this.history.length -1 ] === this.history[this.history.length -2 ] && this.history[this.history.length -3 ] == this.history[this.history.length -2] && this.history[this.history.length -4] == this.history[this.history.length -2]){
+                break;}
+            color = this.history[this.history.length -3 ];
+		   break ;
+        //4times the same
+         } while (this.history[this.history.length -1 ] === this.history[this.history.length -2 ] && this.history[this.history.length -3 ] == this.history[this.history.length -2] && this.history[this.history.length -4] == this.history[this.history.length -2]){
+			if(this.history[this.history.length -1 ] === this.history[this.history.length -2 ] && this.history[this.history.length -3 ] == this.history[this.history.length -2] && this.history[this.history.length -4] == this.history[this.history.length -2] && this.history[this.history.length -5] == this.history[this.history.length -2]){
+                break;}
+            if (this.history[this.history.length -4 ]=== 'red'){
+			color = 'black';
+			}else if (this.history[this.history.length -4 ] === 'black'){
+				color = 'red';}
+			break ;
+         //5times the same
+         } while (this.history[this.history.length -1 ] === this.history[this.history.length -2 ] && this.history[this.history.length -3 ] == this.history[this.history.length -2] && this.history[this.history.length -4] == this.history[this.history.length -2] && this.history[this.history.length -5] == this.history[this.history.length -2]){
+             color = this.history[this.history.length -5 ];
+             break;}
+	}//END ETEST
     else if (color === 'last') {
         color = this.history[this.history.length - 1];
     }
