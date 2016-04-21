@@ -2,7 +2,7 @@
 // @name            [BETA]CSGODouble AUTOBET by Eagle
 // @description     An userscript for Csgodouble
 // @namespace       AUTOBET by Eagle
-// @version         2.8
+// @version         2.9
 // @author          Eagle
 // @match           http://www.csgodouble.com/
 // @match           http://www.csgodouble.com/index.php
