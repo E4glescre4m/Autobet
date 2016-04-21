@@ -2,7 +2,7 @@
 // @name            [BETA]CSGODouble AUTOBET by Eagle
 // @description     An userscript for Csgodouble
 // @namespace       AUTOBET by Eagle
-// @version         2.7
+// @version         2.8
 // @author          Eagle
 // @match           http://www.csgodouble.com/
 // @match           http://www.csgodouble.com/index.php
@@ -286,7 +286,7 @@ function AutoBet() {
 		textbox.value = "/send 76561198047267501 1 ";
 		self.spend('Spend Coins to Eagle');
 		self.menu.spend.disabled = false;
-		chat('italic', '[Autobet] '+'You have to manualy press enter. You also can change the coin amount ;));
+		chat('italic', '[Autobet] '+'You have to manualy press enter. You also can change the coin amount ;)');
         
     };
 
