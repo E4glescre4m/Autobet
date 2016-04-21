@@ -2,7 +2,7 @@
 // @name            [BETA]CSGODouble AUTOBET by Eagle
 // @description     An userscript for Csgodouble
 // @namespace       AUTOBET by Eagle
-// @version         2.9
+// @version         3.0
 // @author          Eagle
 // @match           http://www.csgodouble.com/
 // @match           http://www.csgodouble.com/index.php
@@ -465,6 +465,10 @@ AutoBet.prototype.updateStats = function() {
     this.menu.statistics.balance.innerHTML = this.stats.balance;
 	this.menu.statistics.zeros.innerHTML = this.stats.zeros;
     return true;
+};
+
+AutoBet.prototype.spend = function (message) {
+	chat('alert', '[Autobet]' + message);
 };
 
 AutoBet.prototype.updateAll = function() {
