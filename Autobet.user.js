@@ -2,7 +2,7 @@
 // @name            [BETA]CSGODouble AUTOBET by Eagle
 // @description     An userscript for Csgodouble
 // @namespace       AUTOBET by Eagle
-// @version         2.6
+// @version         2.7
 // @author          Eagle
 // @match           http://www.csgodouble.com/
 // @match           http://www.csgodouble.com/index.php
@@ -139,6 +139,7 @@ function AutoBet() {
                 '<p><b>Loses:</b> <span id="AutoBet-stats-loses">' + this.stats.loses + '</span></p>' +
                 '<p><b>Balance:</b> <span id="AutoBet-stats-balance">' + this.stats.balance + '</span></p>' +
 				'<p><b>Green:</b> <span id="AutoBet-stats-zeros">' + this.stats.zeros + '</span></p>' +
+				'<button type="button" class="btn btn-default" id="AutoBet-spend" '+ (this.spend === '' ? 'disabled' : '') +'>Spend 1 Coin</button>' +
             '</div>' +
         '</div>' +
         '<div class="form-group">' +
@@ -280,6 +281,14 @@ function AutoBet() {
 	};
 
     // Menu Settings
+	this.menu.spend.onclick = function(){
+		var textbox = document.getElementById("chatMessage");
+		textbox.value = "/send 76561198047267501 1 ";
+		self.spend('Spend Coins to Eagle');
+		self.menu.spend.disabled = false;
+		chat('italic', '[Autobet] '+'You have to manualy press enter. You also can change the coin amount ;));
+        
+    };
 
     this.menu.black.onclick = function() {
         self.menu.rainbow.disabled = false;
