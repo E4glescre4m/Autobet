@@ -509,13 +509,16 @@ AutoBet.prototype.bet = function(amount, color) {
 			while (this.history[this.history.length -2 ]=== 'green'){
 				if (this.history[this.history.length -3] === 'red'){
 					color = 'black';
+					break;
 				} else if (this.history[this.history.length -3] === 'black'){
 					color = 'red';
 					break;}
 			} if (this.history[this.history.length -2 ] === 'black'){
-				color = 'red';}
+				color = 'red';
+				break;}
 				else if (this.history[this.history.length -2 ] === 'red'){
-				color = 'black';}
+				color = 'black';
+				break;}
 			else if(this.history[this.history.length -4] != this.history[this.history.length -5]){
 					if(this.history[this.history.length -4] == 'red'){
 						color = 'black';
