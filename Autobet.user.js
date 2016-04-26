@@ -2,7 +2,7 @@
 // @name            [BETA]CSGODouble AUTOBET by Eagle
 // @description     An userscript for Csgodouble
 // @namespace       AUTOBET by Eagle
-// @version         3.0
+// @version         3.1
 // @author          Eagle
 // @match           http://www.csgodouble.com/
 // @match           http://www.csgodouble.com/index.php
@@ -22,7 +22,7 @@ var simulation = false;
 var stop_on_min_balance = false;
 var calculate_safe_bet = false;
 var base_bet = 5;
-var safe_bet_amount = 6;
+var safe_bet_amount = 10;
 var default_color = 'red';
 var default_method = 'martingale';
 var theme = 'dark';
@@ -99,7 +99,8 @@ function AutoBet() {
         'wins': 0,
         'loses': 0,
         'balance': 0,
-		'zeros': 0
+		'zeros': 0,
+		'chance':0
     };
 
     var menu = document.createElement('div');
@@ -134,12 +135,12 @@ function AutoBet() {
                 '</div>' +
             '</div>' +
             '<div class="col-lg-3">' +
-                '<h3>Statistics</h3>' +
+                '<h3>Statistics</h3><button type="button" class="btn btn-default" id="AutoBet-spend" '+ (this.spend === '' ? 'disabled' : '') +'>Spend 1 Coin</button>' +
                 '<p><b>Wins:</b> <span id="AutoBet-stats-wins">' + this.stats.wins + '</span></p>' +
                 '<p><b>Loses:</b> <span id="AutoBet-stats-loses">' + this.stats.loses + '</span></p>' +
                 '<p><b>Balance:</b> <span id="AutoBet-stats-balance">' + this.stats.balance + '</span></p>' +
 				'<p><b>Green:</b> <span id="AutoBet-stats-zeros">' + this.stats.zeros + '</span></p>' +
-				'<button type="button" class="btn btn-default" id="AutoBet-spend" '+ (this.spend === '' ? 'disabled' : '') +'>Spend 1 Coin</button>' +
+				'<p><b>Winchance:</b> <span id="AutoBet-stats-chance">' + this.stats.chance + '</span><b>%</b></p>' +
             '</div>' +
         '</div>' +
         '<div class="form-group">' +
@@ -195,6 +196,7 @@ function AutoBet() {
             'loses': document.getElementById('AutoBet-stats-loses'),
             'balance': document.getElementById('AutoBet-stats-balance'),
 			'zeros': document.getElementById('AutoBet-stats-zeros'),
+			'chance': document.getElementById('AutoBet-stats-chance'),
 			      },
         'theme': document.getElementById('AutoBet-theme-switch'),
 		'safebetamount': document.getElementById('AutoBet-safe-bet-amount'),
@@ -464,6 +466,7 @@ AutoBet.prototype.updateStats = function() {
     this.menu.statistics.loses.innerHTML = this.stats.loses;
     this.menu.statistics.balance.innerHTML = this.stats.balance;
 	this.menu.statistics.zeros.innerHTML = this.stats.zeros;
+	this.menu.statistics.chance.innerHTML = this.stats.chance;
     return true;
 };
 
@@ -471,8 +474,16 @@ AutoBet.prototype.spend = function (message) {
 	chat('alert', '[Autobet]' + message);
 };
 
+AutoBet.prototype.updateChance = function (){
+	
+	this.stats.chance = Math.round((this.stats.wins/(this.stats.wins + this. stats.loses)) * 100);
+	if (this.debug) { this.logdebug('Winchance is : ' + this.stats.chance); }
+	return true;
+	
+};
+
 AutoBet.prototype.updateAll = function() {
-    return this.updateBalance() && this.updateHistory() && this.updateStats();
+    return this.updateBalance() && this.updateHistory() && this.updateStats() && this.updateChance();
 };
 
 AutoBet.prototype.bet = function(amount, color) {
@@ -495,17 +506,93 @@ AutoBet.prototype.bet = function(amount, color) {
 	else if (color === 'etest') {
 		//2times the same
          while (this.history[this.history.length -1 ] === this.history[this.history.length -2 ] ){
-			if (this.history[this.history.length -2 ]=== 'red'){
-			color = 'black';
-			}else if (this.history[this.history.length -2 ] === 'black'){
+			while (this.history[this.history.length -2 ]=== 'green'){
+				if (this.history[this.history.length -3] === 'red'){
+					color = 'black';
+				} else if (this.history[this.history.length -3] === 'black'){
+					color = 'red';
+					break;}
+			} if (this.history[this.history.length -2 ] === 'black'){
 				color = 'red';}
+				else if (this.history[this.history.length -2 ] === 'red'){
+				color = 'black';}
+			else if(this.history[this.history.length -4] != this.history[this.history.length -5]){
+					if(this.history[this.history.length -4] == 'red'){
+						color = 'black';
+						break;
+					}else if (this.history[this.history.length -4] == 'black'){
+						color = 'red';
+						break;
+					}else if (this.history[this.history.length -4] == 'green'){
+						if(this.history[this.history.length -5] == 'red'){
+							color = 'black';
+							break;
+						}else if(this.history[this.history.length -5] == 'black'){
+							color = 'red';
+							break;
+						}
+						
+						break;
+					}
+				
+				
+				break;}		
 			break ;
          } while (this.history[this.history.length -1] != this.history[this.history.length -2]){
-			//if green
-             if (this.history[this.history.length -1] == 'green'){
+			if (this.history[this.history.length -1] == 'green'){
 			    color = 'green';
                 break;}
-             if (this.history[this.history.length -1 ] === this.history[this.history.length -2 ] && this.history[this.history.length -3 ] == this.history[this.history.length -2]){
+			else if(this.history[this.history.length -2] === 'green'){
+					if(this.history[this.history.length -3] === 'red'){
+						color = 'black';
+						break;
+					}else if(this.history[this.history.length -3] === 'black'){
+						color = 'red';
+						break;}
+					break;}
+			else if(this.history[this.history.length -4] != this.history[this.history.length -5]){
+					if(this.history[this.history.length -1] == 'red'){
+						color = 'black';
+						break;
+					}else if (this.history[this.history.length -1] == 'black'){
+						color = 'red';
+						break;
+					}else if (this.history[this.history.length -4] == 'green'){
+						if(this.history[this.history.length -5] == 'red'){
+							color = 'black';
+							break;
+						}else if(this.history[this.history.length -5] == 'black'){
+							color = 'red';
+							break;
+						}
+						
+						break;
+					}
+				
+				
+				break;}		
+			else if(this.history[this.history.length -4] == this.history[this.history.length -5]){
+					if(this.history[this.history.length -1] == 'red'){
+						color = 'red';
+						break;
+					}else if (this.history[this.history.length -1] == 'black'){
+						color = 'black';
+						break;
+					}else if (this.history[this.history.length -4] == 'green'){
+						if(this.history[this.history.length -5] == 'red'){
+							color = 'black';
+							break;
+						}else if(this.history[this.history.length -5] == 'black'){
+							color = 'red';
+							break;
+						}
+						
+						break;
+					}
+				
+				
+				break;}	
+            else if (this.history[this.history.length -1 ] === this.history[this.history.length -2 ] && this.history[this.history.length -3 ] == this.history[this.history.length -2]){
                 break;}
              color = this.history[this.history.length -2];
 			break ;
